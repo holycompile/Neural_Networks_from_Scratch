@@ -18,7 +18,7 @@ weight_array=np.array(weights) # 3*4
 bias_array=np.array(biases)
 
 #using the dot product 
-# note for ddt product we need ( 3 * 4 ) and ( 4 * 3 )
+# note for dot product we need ( 3 * 4 ) and ( 4 * 3 )
 output = np.dot(input_array, weight_array.T)+bias_array
 
 print(output)
