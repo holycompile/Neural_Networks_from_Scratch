@@ -1,218 +1,254 @@
 # Neural Network from Scratch (in Python)
 
-Welcome to the **Neural Network from Scratch** repository! This project serves as a step-by-step educational guide to understanding the mathematical and structural foundations of deep learning. By building a neural network from first principles, this codebase transitions gradually from basic loops and manual scalar arithmetic to matrix operations, batch processing, and object-oriented abstractions using NumPy.
+Welcome to the **Neural Network from Scratch** repository! This project serves as a step-by-step educational guide to understanding the mathematical and structural foundations of deep learning. By building a neural network from first principles, this codebase transitions gradually from manual scalar arithmetic to matrix operations, batch processing, activation functions, and modular object-oriented abstractions using NumPy.
 
-Each script inside the [prototype](file:///c:/Users/User/OneDrive/Desktop/Neural_Network_from_Scratch/prototype) directory represents a different "level" in this journey.
+This repository documents the core implementation files situated directly in the root directory.
 
 ---
 
 ## 📂 Repository Structure
 
-The project is organized progressively as follows:
+The core files in this repository are structured as follows:
 
 ```text
 Neural_Network_from_Scratch/
 │
-└── prototype/
-    ├── neuron1.py         # Level 1: Single neuron forward pass using manual loops
-    ├── neuronLVL2.py      # Level 2: A single layer of 3 neurons with manual calculations
-    ├── neuronLVL3.py      # Level 3: Single neuron using NumPy dot product
-    ├── neuronLVL4.py      # Level 4: Layer of 3 neurons (single sample) using NumPy dot product
-    ├── neuronLVL5.py      # Level 5: Layer of 3 neurons (batch of 3 samples) with weight transposition
-    ├── layering.py        # Level 6: Two sequential dense layers using manual matrix operations
-    ├── layering2.py       # Level 7: Clean Object-Oriented design introducing the Layer_Dense class
-    └── activation.py      # Level 8: Placeholder for future activation functions (ReLU, Softmax, etc.)
+├── Neuron1.py                         # Step 1: Manual 3-neuron layer calculation (directly indexed)
+├── Neuron2.py                         # Step 2: Manual 3-neuron layer calculation (via unpacked weight lists)
+├── Neuron3.py                         # Step 3: Single neuron using NumPy dot product
+├── Layer_of_Neurons.py                # Step 4: Layer of 3 neurons (single sample) using np.dot
+├── Transpose_usecase.py               # Step 5: Batch inputs matrix dot product requiring transposing (.T)
+├── layering2.0.py                     # Step 6: Two sequential dense layers using manual np.dot & transpositions
+├── dense_layer.py                     # Step 7: Modular object-oriented Layer_Dense class with nnfs spiral data
+├── relu1.py                           # Step 8: Modular dense layer integrated with ReluActivation class
+├── keepdims.py                        # Step 9: Tutorial on np.sum behavior (axes and keepdims=True)
+├── softmax.py                         # Step 10: Standalone Softmax normalization implementation
+├── 1st_Forward_Implement_No_Loss.py   # Step 11: Unified feedforward pipeline (Dense -> ReLU -> Dense -> Softmax)
+└── prototype/                         # Historical prototype scripts directory
 ```
 
 ---
 
-## 🧠 Step-by-Step Evolution & Compact Neural Diagrams
+## 🧠 Step-by-Step Implementation & Architecture Diagrams
 
-### Level 1: The Fundamental Single Neuron
-📄 **File:** [neuron1.py](file:///c:/Users/User/OneDrive/Desktop/Neural_Network_from_Scratch/prototype/neuron1.py)
+### Step 1: The Multi-Neuron Manual Layer
+📄 **Files:** [Neuron1.py](file:///c:/Users/User/OneDrive/Desktop/Neural_Network_from_Scratch/Neuron1.py) & [Neuron2.py](file:///c:/Users/User/OneDrive/Desktop/Neural_Network_from_Scratch/Neuron2.py)
 
-A single neuron takes multiple inputs, multiplies each by a corresponding weight, adds them together, and then adds a bias:
+To calculate output for a fully connected layer containing 3 neurons, we multiply a single 4-dimensional input vector by the unique weights of each neuron and add their corresponding biases.
 
-$$y = \sum_{i=1}^{n} (x_i \cdot w_i) + b$$
+$$y_j = \sum_{i=1}^{n} (x_i \cdot w_{j,i}) + b_j$$
 
 #### 📊 Architecture Diagram
 ```mermaid
 graph LR
-    X["Inputs (1x4)"] -->|Weights| N(("Σ + Bias"))
-    Bias(("Bias: 2.0")) --> N
-    N --> Out["Output: 4.8"]
-
-    style X fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
-    style N fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
-    style Out fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    Inputs["Inputs: 1.0, 2.0, 3.0, 2.5"] --> N1["Neuron 1 (Manual Sum)"]
+    Inputs --> N2["Neuron 2 (Manual Sum)"]
+    Inputs --> N3["Neuron 3 (Manual Sum)"]
+    N1 --> Out1["Out 1: 4.8"]
+    N2 --> Out2["Out 2: 1.21"]
+    N3 --> Out3["Out 3: -0.58"]
+    
+    style Inputs fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
+    style N1 fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
+    style N2 fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
+    style N3 fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
+    style Out1 fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    style Out2 fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    style Out3 fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
 ```
-
-*   **Key Concept:** Manual iteration over inputs and weights using a `for` loop.
-*   **Math in Action:**
-    $$\text{sum} = (1 \times 0.2) + (2 \times 0.8) + (3 \times -0.5) + (2.5 \times 1.0) = 2.8$$
-    $$\text{output} = 2.8 + 2.0 \ (\text{bias}) = 4.8$$
 
 ---
 
-### Level 2: Multi-Neuron Layers (Manual Arithmetic)
-📄 **File:** [neuronLVL2.py](file:///c:/Users/User/OneDrive/Desktop/Neural_Network_from_Scratch/prototype/neuronLVL2.py)
+### Step 2: Vector Math (NumPy Dot Product)
+📄 **File:** [Neuron3.py](file:///c:/Users/User/OneDrive/Desktop/Neural_Network_from_Scratch/Neuron3.py)
 
-To form a fully connected (dense) layer, we combine multiple neurons that all receive the same inputs but have their own distinct weights and biases.
-
-#### 📊 Architecture Diagram
-```mermaid
-graph LR
-    X["Inputs (1x4)"] -->|Weights| Layer["Dense Layer (3 Neurons)"]
-    Biases["Biases: 2.0, 3.0, 0.5"] --> Layer
-    Layer --> Out["Outputs: 4.8, 1.21, 2.385"]
-
-    style X fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
-    style Layer fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
-    style Out fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
-```
-
-*   **Key Concept:** Coding three neurons manually without helper libraries. Shows why hardcoding calculations becomes unmanageable as networks grow.
-
----
-
-### Level 3: Leveraging Vector Math (NumPy Dot Product)
-📄 **File:** [neuronLVL3.py](file:///c:/Users/User/OneDrive/Desktop/Neural_Network_from_Scratch/prototype/neuronLVL3.py)
-
-Rather than writing manual loops, we express the weighted sum of a neuron as a dot product between the input vector $\vec{x}$ and weight vector $\vec{w}$.
+Replaces manual loop iterations with the dot product of two 1D NumPy arrays, demonstrating a clean implementation of a single neuron.
 
 #### 📊 Architecture Diagram
 ```mermaid
 graph LR
-    X["Inputs x: 1.0, 2.0, 3.0, 2.5"] --> Dot["Dot Product: x · w"]
-    W["Weights w: 0.2, 0.8, -0.5, 1.0"] --> Dot
+    Inputs["1D Input Array (1x4)"] --> Dot["np.dot(input, weight)"]
+    Weights["1D Weight Array (1x4)"] --> Dot
     Bias["Bias: 2.0"] --> Add["+"]
-    Dot --> Add
-    Add --> Out["Output: 4.8"]
-
-    style X fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
-    style W fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
+    Dot --> Add --> Out["Output: 4.8"]
+    
+    style Inputs fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
+    style Weights fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
     style Add fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
     style Out fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
 ```
 
-*   **Key Concept:** Introduction of `numpy` for performance and readability.
-*   **Math in Action:**
-    $$\text{output} = \vec{x} \cdot \vec{w} + b = \text{np.dot(inputs, weights)} + \text{bias}$$
-
 ---
 
-### Level 4: A Whole Layer via Matrix Multiplication
-📄 **File:** [neuronLVL4.py](file:///c:/Users/User/OneDrive/Desktop/Neural_Network_from_Scratch/prototype/neuronLVL4.py)
+### Step 3: Layer of Neurons (Matrix Multiplication)
+📄 **File:** [Layer_of_Neurons.py](file:///c:/Users/User/OneDrive/Desktop/Neural_Network_from_Scratch/Layer_of_Neurons.py)
 
-Instead of a single weight vector, we group the weights of all neurons in a layer into a 2D weight matrix ($W$). We calculate the entire layer's output using a single matrix-vector multiplication.
+Groups individual weight vectors of multiple neurons into a single 2D weight matrix ($W$) of shape `(3, 4)`. Computing the outputs is vectorized using matrix-vector multiplication with input vector ($x$).
+
+$$\text{Output} = W \cdot x + b$$
 
 #### 📊 Architecture Diagram
 ```mermaid
 graph LR
-    X["Inputs x (1x4)"] --> Dot["np.dot(W, x)"]
-    W_Mat["Weights W (3x4 Matrix)"] --> Dot
-    Biases["Biases: 2.0, 3.0, 0.5"] --> Add["+"]
-    Dot --> Add
-    Add --> Out["Outputs: 4.8, 1.21, 2.385"]
-
-    style X fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
-    style W_Mat fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
+    Inputs["Inputs x (4,)"] --> Dot["np.dot(W, x)"]
+    Weights["Weights Matrix W (3x4)"] --> Dot
+    Biases["Biases (3,)"] --> Add["+"]
+    Dot --> Add --> Out["Outputs (3,)"]
+    
+    style Inputs fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
+    style Weights fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
     style Add fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
     style Out fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
 ```
 
-*   **Key Concept:** `np.dot(weights, inputs)` maps multiple weight vectors against a single input vector.
-
 ---
 
-### Level 5: Batching Inputs & Transposition
-📄 **File:** [neuronLVL5.py](file:///c:/Users/User/OneDrive/Desktop/Neural_Network_from_Scratch/prototype/neuronLVL5.py)
+### Step 4: Batch Processing & Matrix Transposition
+📄 **File:** [Transpose_usecase.py](file:///c:/Users/User/OneDrive/Desktop/Neural_Network_from_Scratch/Transpose_usecase.py)
 
-In practice, neural networks process multiple samples at once (a "batch") to leverage GPU/CPU parallelism. Inputs become a 2D matrix ($X$) where rows represent samples and columns represent features.
+To process a batch of inputs, the input vector becomes a 2D matrix ($X$) of shape `(n_samples, n_features)`. In order to align dimensions for dot-product multiplication with the weight matrix $W$ of shape `(n_neurons, n_features)`, we must transpose the weight matrix ($W^T$).
+
+$$\text{Output} = X \cdot W^T + b$$
 
 #### 📊 Architecture Diagram
 ```mermaid
 graph LR
-    X_Mat["Inputs X (3x4 Matrix)"] --> Dot["np.dot(X, W.T)"]
-    W_Mat["Weights W (3x4 Matrix)"] --> Dot
-    Biases["Biases: 2.0, 3.0, 0.5"] --> Add["+"]
-    Dot --> Add
-    Add --> Out["Outputs (3x3 Matrix)"]
-
-    style X_Mat fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
-    style W_Mat fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
+    Inputs["Inputs X (3x4 Batch)"] --> Dot["np.dot(X, W.T)"]
+    Weights["Weights Matrix W (3x4)"] --> Dot
+    Biases["Biases (3,)"] --> Add["+"]
+    Dot --> Add --> Out["Outputs (3x3 Batch)"]
+    
+    style Inputs fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
+    style Weights fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
     style Add fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
     style Out fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
 ```
 
-*   **Key Concept:** Transposing the weight matrix ($W^T$) to perform matrix multiplication:
-    $$\text{Outputs} = X \cdot W^T + B$$
-*   **NumPy Broadcasting:** Explains how a 1D bias vector is automatically added to each row of the resulting matrix.
-
 ---
 
-### Level 6: Building a Multi-Layer Network
-📄 **File:** [layering.py](file:///c:/Users/User/OneDrive/Desktop/Neural_Network_from_Scratch/prototype/layering.py)
+### Step 5: Chaining Sequential Layers
+📄 **File:** [layering2.0.py](file:///c:/Users/User/OneDrive/Desktop/Neural_Network_from_Scratch/layering2.0.py)
 
-Here, we chain two dense layers together. The outputs of the first layer become the inputs to the second layer.
+Passes batch inputs through two sequential layers. The outputs of the first layer serve as the input vector to the second layer.
 
 #### 📊 Architecture Diagram
 ```mermaid
 graph LR
-    X["Inputs (3x4 Matrix)"] --> L1["Layer 1 (3 Neurons)"]
-    L1 --> L2["Layer 2 (3 Neurons)"]
-    L2 --> Out["Outputs (3x3 Matrix)"]
-
-    style X fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
+    Inputs["Inputs X (3x4)"] --> L1["Layer 1: np.dot(X, W1.T) + B1"]
+    L1 --> L2["Layer 2: np.dot(L1, W2.T) + B2"]
+    L2 --> Out["Outputs (3x3)"]
+    
+    style Inputs fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
     style L1 fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
     style L2 fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
     style Out fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
 ```
 
-*   **Key Concept:** Feeding layer outputs sequentially to create hierarchical representations:
-    $$\text{Output}_1 = X \cdot W_1^T + B_1$$
-    $$\text{Output}_2 = \text{Output}_1 \cdot W_2^T + B_2$$
-
 ---
 
-### Level 7: Clean Object-Oriented Abstraction
-📄 **File:** [layering2.py](file:///c:/Users/User/OneDrive/Desktop/Neural_Network_from_Scratch/prototype/layering2.py)
+### Step 6: Object-Oriented Modularity
+📄 **File:** [dense_layer.py](file:///c:/Users/User/OneDrive/Desktop/Neural_Network_from_Scratch/dense_layer.py)
 
-Instead of manually managing matrices for every layer, we encapsulate the logic inside a reusable [Layer_Dense](file:///c:/Users/User/OneDrive/Desktop/Neural_Network_from_Scratch/prototype/layering2.py#L12) class.
+Introduces the `Layer_Dense` class. The weights are initialized with shape `(n_inputs, n_neurons)` using `0.01 * np.random.randn(...)`, which avoids the need to transpose weights during forward passes:
+
+$$\text{Output} = X \cdot W + b$$
+
+It uses the `nnfs` library to generate a non-linear spiral dataset ($X, y$) to verify the class.
 
 #### 📊 Architecture Diagram
 ```mermaid
 graph LR
-    X["Inputs (3x4 Matrix)"] --> L1["Layer 1 (5 Neurons)"]
-    L1 --> L2["Layer 2 (2 Neurons)"]
-    L2 --> Out["Outputs (3x2 Matrix)"]
-
-    style X fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
+    Dataset["spiral_data (100 samples per class, 2 features)"] --> L1["Layer_Dense (2 inputs, 3 neurons)"]
+    L1 --> Out["Outputs (300x3)"]
+    
+    style Dataset fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
     style L1 fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
-    style L2 fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
     style Out fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
 ```
 
-*   **Key Concept:** Object-oriented modularity.
-*   **Optimization:** Weights are initialized with shape `(n_inputs, n_neurons)` instead of `(n_neurons, n_inputs)`. This eliminates the need for transposing the weights during the forward pass:
-    $$\text{Output} = X \cdot W + B$$
-*   **Weight Initialization:** Weights are initialized randomly using Gaussian distribution scaled by `0.10` (`0.10 * np.random.randn(...)`), and biases are initialized to zeros.
+---
+
+### Step 7: Rectified Linear Unit (ReLU) Activation
+📄 **File:** [relu1.py](file:///c:/Users/User/OneDrive/Desktop/Neural_Network_from_Scratch/relu1.py)
+
+Introduces non-linear mappings via a `ReluActivation` class. It enforces:
+
+$$f(x) = \max(0, x)$$
+
+This step feeds the linear output of `Layer_Dense` through `ReluActivation`.
+
+#### 📊 Architecture Diagram
+```mermaid
+graph LR
+    Linear["Linear Outputs: np.dot(X, W) + B"] --> ReLU["ReLU: np.maximum(0, input)"] --> Out["Activated Outputs"]
+    
+    style Linear fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
+    style ReLU fill:#fff9c4,stroke:#fbc02d,stroke-width:2px;
+    style Out fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+```
 
 ---
 
-### Level 8: Activations (Placeholder)
-📄 **File:** [activation.py](file:///c:/Users/User/OneDrive/Desktop/Neural_Network_from_Scratch/prototype/activation.py)
+### Step 8: Understanding NumPy Summing Dimensions
+📄 **File:** [keepdims.py](file:///c:/Users/User/OneDrive/Desktop/Neural_Network_from_Scratch/keepdims.py)
 
-A blank slate representing the logical next step: introducing non-linear activation functions (like Rectified Linear Unit (ReLU) or Softmax) to allow the network to learn complex non-linear boundaries.
+A diagnostic utility demonstrating how `np.sum(axis, keepdims=True)` behaves. This is a crucial concept for understanding how inputs are normalized during the softmax calculation.
 
 #### 📊 Concept Diagram
 ```mermaid
-graph LR
-    Z["Pre-Activation z"] --> Act["Activation f"] --> A["Post-Activation a"]
+graph TD
+    A["Matrix A (3x3)"] --> S0["np.sum(axis=0) -> shape (3,)"]
+    A --> S0K["np.sum(axis=0, keepdims=True) -> shape (1,3)"]
+    A --> S1["np.sum(axis=1) -> shape (3,)"]
+    A --> S1K["np.sum(axis=1, keepdims=True) -> shape (3,1)"]
+    
+    style A fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
+```
 
-    style Z fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
-    style Act fill:#fff9c4,stroke:#fbc02d,stroke-width:2px;
-    style A fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+---
+
+### Step 9: Softmax Activation (Probability Distribution)
+📄 **File:** [softmax.py](file:///c:/Users/User/OneDrive/Desktop/Neural_Network_from_Scratch/softmax.py)
+
+Implements Softmax calculation for multi-class classification. Subtraction of the row maximum ($x_{\max}$) prevents exponent overflow:
+
+$$S_{i,j} = \frac{e^{z_{i,j} - z_{i,\max}}}{\sum_{k} e^{z_{i,k} - z_{i,\max}}}$$
+
+#### 📊 Architecture Diagram
+```mermaid
+graph LR
+    In["Inputs (3x4)"] --> Exp["exp(input - max)"]
+    Exp --> Sum["Sum along axis=1 (keepdims=True)"]
+    Exp & Sum --> Div["Divide: Exp / Sum"]
+    Div --> Prob["Probabilities (3x4)"]
+    
+    style In fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
+    style Prob fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+```
+
+---
+
+### Step 10: Unified Feedforward Implementation
+📄 **File:** [1st_Forward_Implement_No_Loss.py](file:///c:/Users/User/OneDrive/Desktop/Neural_Network_from_Scratch/1st_Forward_Implement_No_Loss.py)
+
+Chains together the completed pieces into a single feedforward pipeline: 
+Input Spiral Data $\rightarrow$ Dense Layer 1 $\rightarrow$ ReLU Activation $\rightarrow$ Dense Layer 2 $\rightarrow$ Softmax Output Activation.
+
+#### 📊 Architecture Diagram
+```mermaid
+graph LR
+    In["Inputs X (300x2)"] --> L1["Layer 1: Dense (2 -> 3)"]
+    L1 --> Act1["ReLU Activation"]
+    Act1 --> L2["Layer 2: Dense (3 -> 3)"]
+    L2 --> Act2["Softmax Output Activation"]
+    Act2 --> Prob["Probabilities (300x3)"]
+    
+    style In fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
+    style L1 fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
+    style Act1 fill:#fff9c4,stroke:#fbc02d,stroke-width:2px;
+    style L2 fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
+    style Act2 fill:#fff9c4,stroke:#fbc02d,stroke-width:2px;
+    style Prob fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
 ```
 
 ---
@@ -221,26 +257,16 @@ graph LR
 
 ### Prerequisites
 
-You need Python 3 and NumPy installed. If you don't have NumPy, install it via pip:
+You need Python 3, NumPy, and the `nnfs` helper library installed:
 
 ```bash
-pip install numpy
+pip install numpy nnfs
 ```
 
 ### Running the Code
 
-You can run any level to see its output in the console. For example, to run the Object-Oriented double-layer neural network forward pass:
+To execute the completed feedforward neural network pipeline and view the output class probabilities:
 
 ```bash
-python prototype/layering2.py
+python 1st_Forward_Implement_No_Loss.py
 ```
-
----
-
-## 🛠️ Future Roadmap
-
-If you wish to expand this project, the logical steps forward are:
-1.  **Implement Activation Functions:** Add a `ReLU` class and a `Softmax` class in [activation.py](file:///c:/Users/User/OneDrive/Desktop/Neural_Network_from_Scratch/prototype/activation.py).
-2.  **Calculate Loss:** Add loss functions (e.g., Categorical Cross-Entropy) to evaluate model performance.
-3.  **Backpropagation:** Implement the chain rule backward pass to calculate gradients of the loss with respect to weights and biases.
-4.  **Optimizer:** Implement Stochastic Gradient Descent (SGD) or Adam to update weights and biases.
