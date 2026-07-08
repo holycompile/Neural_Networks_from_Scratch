@@ -48,13 +48,13 @@ graph LR
     N2 --> Out2["Out 2: 1.21"]
     N3 --> Out3["Out 3: -0.58"]
     
-    style Inputs fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
-    style N1 fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
-    style N2 fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
-    style N3 fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
-    style Out1 fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
-    style Out2 fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
-    style Out3 fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    style Inputs fill:#2c3e50,stroke:#34495e,stroke-width:2px,color:#fff;
+    style N1 fill:#0984e3,stroke:#74b9ff,stroke-width:2px,color:#fff;
+    style N2 fill:#0984e3,stroke:#74b9ff,stroke-width:2px,color:#fff;
+    style N3 fill:#0984e3,stroke:#74b9ff,stroke-width:2px,color:#fff;
+    style Out1 fill:#27ae60,stroke:#2ecc71,stroke-width:2px,color:#fff;
+    style Out2 fill:#27ae60,stroke:#2ecc71,stroke-width:2px,color:#fff;
+    style Out3 fill:#27ae60,stroke:#2ecc71,stroke-width:2px,color:#fff;
 ```
 
 ---
@@ -72,10 +72,12 @@ graph LR
     Bias["Bias: 2.0"] --> Add["+"]
     Dot --> Add --> Out["Output: 4.8"]
     
-    style Inputs fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
-    style Weights fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
-    style Add fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
-    style Out fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    style Inputs fill:#2c3e50,stroke:#34495e,stroke-width:2px,color:#fff;
+    style Weights fill:#2c3e50,stroke:#34495e,stroke-width:2px,color:#fff;
+    style Dot fill:#0984e3,stroke:#74b9ff,stroke-width:2px,color:#fff;
+    style Bias fill:#6c5ce7,stroke:#a29bfe,stroke-width:2px,color:#fff;
+    style Add fill:#0984e3,stroke:#74b9ff,stroke-width:2px,color:#fff;
+    style Out fill:#27ae60,stroke:#2ecc71,stroke-width:2px,color:#fff;
 ```
 
 ---
@@ -95,10 +97,12 @@ graph LR
     Biases["Biases (3,)"] --> Add["+"]
     Dot --> Add --> Out["Outputs (3,)"]
     
-    style Inputs fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
-    style Weights fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
-    style Add fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
-    style Out fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    style Inputs fill:#2c3e50,stroke:#34495e,stroke-width:2px,color:#fff;
+    style Weights fill:#2c3e50,stroke:#34495e,stroke-width:2px,color:#fff;
+    style Dot fill:#0984e3,stroke:#74b9ff,stroke-width:2px,color:#fff;
+    style Biases fill:#6c5ce7,stroke:#a29bfe,stroke-width:2px,color:#fff;
+    style Add fill:#0984e3,stroke:#74b9ff,stroke-width:2px,color:#fff;
+    style Out fill:#27ae60,stroke:#2ecc71,stroke-width:2px,color:#fff;
 ```
 
 ---
@@ -118,10 +122,12 @@ graph LR
     Biases["Biases (3,)"] --> Add["+"]
     Dot --> Add --> Out["Outputs (3x3 Batch)"]
     
-    style Inputs fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
-    style Weights fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
-    style Add fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
-    style Out fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    style Inputs fill:#2c3e50,stroke:#34495e,stroke-width:2px,color:#fff;
+    style Weights fill:#2c3e50,stroke:#34495e,stroke-width:2px,color:#fff;
+    style Dot fill:#0984e3,stroke:#74b9ff,stroke-width:2px,color:#fff;
+    style Biases fill:#6c5ce7,stroke:#a29bfe,stroke-width:2px,color:#fff;
+    style Add fill:#0984e3,stroke:#74b9ff,stroke-width:2px,color:#fff;
+    style Out fill:#27ae60,stroke:#2ecc71,stroke-width:2px,color:#fff;
 ```
 
 ---
@@ -138,10 +144,10 @@ graph LR
     L1 --> L2["Layer 2: np.dot(L1, W2.T) + B2"]
     L2 --> Out["Outputs (3x3)"]
     
-    style Inputs fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
-    style L1 fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
-    style L2 fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
-    style Out fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    style Inputs fill:#2c3e50,stroke:#34495e,stroke-width:2px,color:#fff;
+    style L1 fill:#0984e3,stroke:#74b9ff,stroke-width:2px,color:#fff;
+    style L2 fill:#0984e3,stroke:#74b9ff,stroke-width:2px,color:#fff;
+    style Out fill:#27ae60,stroke:#2ecc71,stroke-width:2px,color:#fff;
 ```
 
 ---
@@ -158,12 +164,12 @@ It uses the `nnfs` library to generate a non-linear spiral dataset ($X, y$) to v
 #### 📊 Architecture Diagram
 ```mermaid
 graph LR
-    Dataset["spiral_data (100 samples per class, 2 features)"] --> L1["Layer_Dense (2 inputs, 3 neurons)"]
+    Dataset["spiral_data (100 samples, 2 features)"] --> L1["Layer_Dense (2 inputs, 3 neurons)"]
     L1 --> Out["Outputs (300x3)"]
     
-    style Dataset fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
-    style L1 fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
-    style Out fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    style Dataset fill:#2c3e50,stroke:#34495e,stroke-width:2px,color:#fff;
+    style L1 fill:#0984e3,stroke:#74b9ff,stroke-width:2px,color:#fff;
+    style Out fill:#27ae60,stroke:#2ecc71,stroke-width:2px,color:#fff;
 ```
 
 ---
@@ -182,9 +188,9 @@ This step feeds the linear output of `Layer_Dense` through `ReluActivation`.
 graph LR
     Linear["Linear Outputs: np.dot(X, W) + B"] --> ReLU["ReLU: np.maximum(0, input)"] --> Out["Activated Outputs"]
     
-    style Linear fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
-    style ReLU fill:#fff9c4,stroke:#fbc02d,stroke-width:2px;
-    style Out fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    style Linear fill:#0984e3,stroke:#74b9ff,stroke-width:2px,color:#fff;
+    style ReLU fill:#e17055,stroke:#fab1a0,stroke-width:2px,color:#fff;
+    style Out fill:#27ae60,stroke:#2ecc71,stroke-width:2px,color:#fff;
 ```
 
 ---
@@ -202,7 +208,11 @@ graph TD
     A --> S1["np.sum(axis=1) -> shape (3,)"]
     A --> S1K["np.sum(axis=1, keepdims=True) -> shape (3,1)"]
     
-    style A fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
+    style A fill:#2c3e50,stroke:#34495e,stroke-width:2px,color:#fff;
+    style S0 fill:#0984e3,stroke:#74b9ff,stroke-width:2px,color:#fff;
+    style S0K fill:#6c5ce7,stroke:#a29bfe,stroke-width:2px,color:#fff;
+    style S1 fill:#0984e3,stroke:#74b9ff,stroke-width:2px,color:#fff;
+    style S1K fill:#6c5ce7,stroke:#a29bfe,stroke-width:2px,color:#fff;
 ```
 
 ---
@@ -219,11 +229,15 @@ $$S_{i,j} = \frac{e^{z_{i,j} - z_{i,\max}}}{\sum_{k} e^{z_{i,k} - z_{i,\max}}}$$
 graph LR
     In["Inputs (3x4)"] --> Exp["exp(input - max)"]
     Exp --> Sum["Sum along axis=1 (keepdims=True)"]
-    Exp & Sum --> Div["Divide: Exp / Sum"]
+    Exp --> Div["Divide: Exp / Sum"]
+    Sum --> Div
     Div --> Prob["Probabilities (3x4)"]
     
-    style In fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
-    style Prob fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    style In fill:#2c3e50,stroke:#34495e,stroke-width:2px,color:#fff;
+    style Exp fill:#0984e3,stroke:#74b9ff,stroke-width:2px,color:#fff;
+    style Sum fill:#6c5ce7,stroke:#a29bfe,stroke-width:2px,color:#fff;
+    style Div fill:#0984e3,stroke:#74b9ff,stroke-width:2px,color:#fff;
+    style Prob fill:#27ae60,stroke:#2ecc71,stroke-width:2px,color:#fff;
 ```
 
 ---
@@ -243,12 +257,12 @@ graph LR
     L2 --> Act2["Softmax Output Activation"]
     Act2 --> Prob["Probabilities (300x3)"]
     
-    style In fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
-    style L1 fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
-    style Act1 fill:#fff9c4,stroke:#fbc02d,stroke-width:2px;
-    style L2 fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
-    style Act2 fill:#fff9c4,stroke:#fbc02d,stroke-width:2px;
-    style Prob fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    style In fill:#2c3e50,stroke:#34495e,stroke-width:2px,color:#fff;
+    style L1 fill:#0984e3,stroke:#74b9ff,stroke-width:2px,color:#fff;
+    style Act1 fill:#e17055,stroke:#fab1a0,stroke-width:2px,color:#fff;
+    style L2 fill:#0984e3,stroke:#74b9ff,stroke-width:2px,color:#fff;
+    style Act2 fill:#e17055,stroke:#fab1a0,stroke-width:2px,color:#fff;
+    style Prob fill:#27ae60,stroke:#2ecc71,stroke-width:2px,color:#fff;
 ```
 
 ---
